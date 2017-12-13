@@ -4,7 +4,7 @@ FROM ubuntu:latest
 # authenticated proxy
 
 # set env. replace right most column with values specific to your environment
-ENV SQUID_CONF "\/etc\/squid\/squid.conf" # this one is used in Dockerfile also and slashes need to be escaped
+ENV SQUID_CONF '/etc/squid/squid.conf' # this one is used in Dockerfile also
 ENV SQUID_PROXY_PORT 3128
 ENV SQUID_USERNAME username
 ENV SQUID_PASSWORD password
