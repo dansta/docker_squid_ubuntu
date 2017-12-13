@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 # we base this on ubuntu
 
-# unauthenticated proxy
+# authenticated proxy
 
 # set env. replace right most column with values specific to your environment
 ENV SQUID_PROXY_PORT 3128
@@ -31,11 +31,12 @@ RUN apt-get update
 RUN apt-get install -y squid
 RUN apt-get install -y rsyslog
 ADD files/etc/squid.conf /etc/squid/squid.conf
-ADD files/replace_squidconf.sh /usr/local/bin/replace_squidconf
+ADD files/replace_conf.sh /usr/local/bin/replace_conf
 ADD files/value.awk /usr/local/bin/value.awk
 ADD files/key.awk /usr/local/bin/key.awk
-RUN chmod +rx /usr/local/bin/replace_squidconf
-RUN /usr/local/bin/replace_squidconf
+RUN chmod +rx /usr/local/bin/replace_conf
+RUN /usr/local/bin/replace_conf
+RUN cat /etc/squid/squid.conf
 
 # document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
