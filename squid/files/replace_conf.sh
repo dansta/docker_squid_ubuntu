@@ -15,7 +15,7 @@ if [ -z "$3" ]; then
 fi
 
 CONF="$1"
-CONFDATA="$(cat $CONF)"
+CONFDATA="$(cat < $CONF)"
 KEYAWK="/usr/bin/awk -f /usr/local/bin/key.awk"
 VALUEAWK="/usr/bin/awk -f /usr/local/bin/value.awk"
 
@@ -25,9 +25,9 @@ ENVCONF="$(env | grep $2)"
 
 # for each squidvar, replace them in the file
 for i in $ENVCONF; do
-  CONFDATA="$(echo -e "$CONFDATA" | sed s/"$(echo $i | $KEYAWK)"/"$(echo $i | $VALUEAWK)"/g )"
+  CONFDATA="$(cat < "$CONFDATA" | sed s/"$(echo $i | $KEYAWK)"/"$(echo $i | $VALUEAWK)"/g )"
 done
 
 #clear out all comments and write to file
-echo -e $CONFDATA | sed /^#.*$/d > "$CONF"
+cat < $CONFDATA | sed /^#.*$/d > "$CONF"
 
