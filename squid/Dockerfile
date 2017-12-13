@@ -34,7 +34,7 @@ ADD files/replace_conf.sh /usr/local/bin/replace_conf
 ADD files/value.awk /usr/local/bin/value.awk
 ADD files/key.awk /usr/local/bin/key.awk
 RUN chmod +rx /usr/local/bin/replace_conf
-RUN /usr/local/bin/replace_conf ${SQUID_CONF}
+RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
 RUN cat ${SQUID_CONF}
 
 # document port usage for docker in case you are going to use it as a service
