@@ -2,7 +2,7 @@
 # set up env
 set -e
 
-CONF="/etc/squid/squid.conf"
+CONF=$1
 CONFDATA="$(cat $CONF)"
 KEYAWK="/usr/bin/awk -f /usr/local/bin/key.awk"
 VALUEAWK="/usr/bin/awk -f /usr/local/bin/value.awk"

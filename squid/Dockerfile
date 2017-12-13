@@ -4,6 +4,7 @@ FROM ubuntu:latest
 # authenticated proxy
 
 # set env. replace right most column with values specific to your environment
+ENV SQUID_CONF /etc/squid/squid.conf
 ENV SQUID_PROXY_PORT 3128
 ENV SQUID_USERNAME username
 ENV SQUID_PASSWORD password
@@ -16,8 +17,6 @@ ENV SQUID_EMAIL_FROMADDRESS squid@hostname.local
 ENV SQUID_EFFECTIVE_USER proxy
 ENV SQUID_EFFECTIVE_GROUP proxy 
 ENV SQUID_ERROR_TEXT dansta_proxy
-
-
 LABEL maintainer=dansta
 
 # change to some webserver that you know is stable. mine isnt which is why per default this is commented out
@@ -30,19 +29,20 @@ LABEL maintainer=dansta
 RUN apt-get update
 RUN apt-get install -y squid
 RUN apt-get install -y rsyslog
-ADD files/etc/squid.conf /etc/squid/squid.conf
+ADD files/etc/squid.conf ${SQUID_CONF} 
 ADD files/replace_conf.sh /usr/local/bin/replace_conf
 ADD files/value.awk /usr/local/bin/value.awk
 ADD files/key.awk /usr/local/bin/key.awk
 RUN chmod +rx /usr/local/bin/replace_conf
-RUN /usr/local/bin/replace_conf
-RUN cat /etc/squid/squid.conf
+RUN /usr/local/bin/replace_conf ${SQUID_CONF}
+RUN cat ${SQUID_CONF}
 
 # document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
 EXPOSE ${SQUID_ICP_PORT}/tcp
 
 # logging for debug. logging should be handled by your support team
+# might possibly indicate a working container if you build@home
 RUN service rsyslog start
 
 # test squid for build, run in foreground
