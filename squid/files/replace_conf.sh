@@ -43,7 +43,13 @@ for i in "${CONFDATA[@]}"; do
   done
 done
 
+# debug check if its ok after this
+cat < "${CONFDATA[@]}"
+
 #clear out all comments and write to file
-echo "${CONFDATA[@]}" | sed /^#.*$/d > "$CONF"
+for i in "${CONFDATA[@]}"; do
+  ${//#.*$//} > "$CONF"
+done
+
 
 echo "Script ran for $SECONDS seconds"
