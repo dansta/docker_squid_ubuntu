@@ -38,17 +38,19 @@ done < "$(env | grep "$APP")"
 for i in "${CONFDATA[@]}"; do
   for y in "${ENVCONF[@]}"; do
      if [[ ${ENVCONF[$y]} =~ .*$APP.* ]]; then
-      CONFDATA[$i]=$(echo -e "${ENVCONF[@]}" | sed s/"$(echo -e $i | $KEYAWK)"/"$(echo -e $i | $VALUEAWK)"/g)
+      CONFDATA[$i]=$(echo -e "${ENVCONF[@]}" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
     fi
   done
 done
 
 # debug check if its ok after this
-echo -e "${CONFDATA[@]}"
+for i in "${CONFDATA[@]}"; do
+  echo -e "${CONFDATA[$i]}"
+done
 
 #clear out all comments and write to file
 for i in "${CONFDATA[@]}"; do
-  ${//#.*$//} > "$CONF"
+  ${${CONFDATA[$i]}//^#.*//} > "$CONF"
 done
 
 
