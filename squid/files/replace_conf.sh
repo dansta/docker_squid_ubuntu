@@ -45,12 +45,12 @@ done
 
 # debug check if its ok after this
 for i in "${CONFDATA[@]}"; do
-  echo -e "${CONFDATA[$i]}"
+  echo -e "$i"
 done
 
 #clear out all comments and write to file
 for i in "${CONFDATA[@]}"; do
-  ${${CONFDATA[$i]}//^#.*//} > "$CONF"
+  "${$!{CONFDATA}}//^#.*//}" > "$CONF"
 done
 
 
