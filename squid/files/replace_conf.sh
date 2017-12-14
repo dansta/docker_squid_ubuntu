@@ -16,7 +16,7 @@ INVALID="0"
 # set up env
 set -x # print loops
 set -e # exit immediately on bg job errors
-set -u # exit on unset vars, like empty configs, no env var etc
+#set -u # exit on unset vars, like empty configs, no env var etc
 set -v # debugging
 
 # read the config as an array
@@ -36,7 +36,7 @@ done < "$(env | grep "$APP")"
 
 # for each line, replace if match $APP match in config array $CONFDATA
 for i in "${CONFDATA[@]}"; do
-  if [[ ${CONFDATA[$i]} =~ .*$APP.* ]] ; then
+  if [[ ${CONFDATA[$i]} =~ .*$APP.* ]]; then
     CONFDATA[$i]=$(echo "${ENVCONF[@]}" | sed s/"$(echo $i | $KEYAWK)"/"$(echo $i | $VALUEAWK)"/g)
   fi
 done
