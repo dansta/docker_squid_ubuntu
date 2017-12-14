@@ -26,13 +26,14 @@ VALUEAWK="/usr/bin/awk -f /usr/local/bin/value.awk"
 
 
 # array push the env vars based on $2
+APP="$2"
 while read -r line; do
   ENVCONF+=($line)
-done < "$(env | grep "$2")"
+done < "$(env | grep "$APP")"
 
 # for each line, replace if match $2
 for i in "${CONFDATA[@]}"; do
-  if [[ ${CONFDATA[$i]} =~ .*$2.* ]] ; then
+  if [[ ${CONFDATA[$i]} =~ .*$APP.* ]] ; then
     CONFDATA[$i]=$(echo "${ENVCONF[@]}" | sed s/"$(echo $i | $KEYAWK)"/"$(echo $i | $VALUEAWK)"/g)
   fi
 done
