@@ -44,14 +44,14 @@ for i in "${CONFDATA[@]}"; do
 done
 
 # debug check if its ok after this
-for i in "${CONFDATA[@]}"; do
-  echo -e "$i"
-done
+#for i in "${CONFDATA[@]}"; do
+#  echo -e "$i"
+#done
 
 #clear out all comments and write to file
-for i in "${CONFDATA[@]}"; do
-  "${$!{CONFDATA}}//^#.*//}" > "$CONF"
-done
-
+#for i in "${CONFDATA[@]}"; do
+#  "${$!{CONFDATA}}//^#.*//}" > "$CONF"
+#done
+cat "$CONF"
 
 echo "Script ran for $SECONDS seconds"
