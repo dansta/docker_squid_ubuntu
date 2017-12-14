@@ -3,7 +3,7 @@
 CONF="$1"
 APP="$2"
 INVALID="$3"
-if [ -z "$INVALID" ]; then
+if ! [ -z "$INVALID" ]; then
   echo "Only two arguments supported"
   exit 1
 fi
