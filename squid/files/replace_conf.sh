@@ -14,20 +14,30 @@ if [ -z "$3" ]; then
   exit 1
 fi
 
+# read the config as an array
 CONF="$1"
-CONFDATA="$(cat < $CONF)"
+while read -r line; do 
+  CONFDATA+=($line) 
+done < "$CONF"
+
+# variable names to shorten references
 KEYAWK="/usr/bin/awk -f /usr/local/bin/key.awk"
 VALUEAWK="/usr/bin/awk -f /usr/local/bin/value.awk"
 
 
-# get all the vars
-ENVCONF="$(env | grep $2)"
+# array push the env vars based on $2
+while read -r line; do
+  ENVCONF+=($line)
+done < "$(env | grep "$2")"
 
-# for each squidvar, replace them in the file
-for i in $ENVCONF; do
-  CONFDATA="$(cat < "$CONFDATA" | sed s/"$(echo $i | $KEYAWK)"/"$(echo $i | $VALUEAWK)"/g )"
+# for each line, replace if match $2
+for i in "${CONFDATA[@]}"; do
+  if [[ ${CONFDATA[$i]} =~ .*$2.* ]] ; then
+    CONFDATA[$i]=$(echo "${ENVCONF[@]}" | sed s/"$(echo $i | $KEYAWK)"/"$(echo $i | $VALUEAWK)"/g)
+  fi
 done
 
 #clear out all comments and write to file
-cat < $CONFDATA | sed /^#.*$/d > "$CONF"
+echo "${CONFDATA[@]}" | sed /^#.*$/d > "$CONF"
 
+echo "Script ran for $SECONDS"
