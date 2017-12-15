@@ -39,7 +39,7 @@ for i in "${CONFDATA[@]}"; do
   for y in "${ENVCONF[@]}"; do
     if [[ "$y" =~ .*$APP.* ]]; then
       echo "Match!"
-      OUTDATA+=$(echo -e "${ENVCONF[@]}" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
+      OUTDATA+=$(echo -e "$y" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
       echo "Replace: $y : $APP "
     else
       echo "No match!"
@@ -52,8 +52,8 @@ for i in "${OUTDATA[@]}"; do
   echo -e "$i" > "$CONF"
   done
 #clear out all comments and write to file
-#for i in "${CONFDATA[@]}"; do
-#  "${$!{CONFDATA}}//^#.*//}" > "$CONF"
-#done
+for i in "${CONFDATA[@]}"; do
+  "${$i//^#.*//}" > "$CONF"
+done
 echo "Done"
 echo "Script ran for $SECONDS seconds"
