@@ -53,7 +53,7 @@ for i in "${OUTDATA[@]}"; do
   done
 #clear out all comments and write to file
 for i in "${CONFDATA[@]}"; do
-  "${$i//^#.*//}" > "$CONF"
+  sed s/^#.*//g > "$CONF"
 done
 echo "Done"
 echo "Script ran for $SECONDS seconds"
