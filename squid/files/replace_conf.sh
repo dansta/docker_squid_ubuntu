@@ -37,13 +37,18 @@ done < "$(env | grep "$APP")"
 # for each line, replace if match $APP match in config array $CONFDATA
 for i in "${CONFDATA[@]}"; do
   for y in "${ENVCONF[@]}"; do
-     if [[ "${ENVCONF[$y]}" =~ ".*$APP.*" ]]; then
-      CONFDATA[$i]=$(echo -e "${ENVCONF[@]}" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
+    if [[ "$y" =~ .*$APP.* ]]; then
+      OUTDATA+=$(echo -e "${ENVCONF[@]}" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
       echo "match!"
+    else
+      OUTDATA+="$i"
     fi
   done
 done
 
+for i in "${OUTDATA[@]}"; do
+  echo -e "$i" > "$CONF"
+  done
 #clear out all comments and write to file
 #for i in "${CONFDATA[@]}"; do
 #  "${$!{CONFDATA}}//^#.*//}" > "$CONF"
