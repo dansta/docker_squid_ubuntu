@@ -38,9 +38,11 @@ done < "$(env | grep "$APP")"
 for i in "${CONFDATA[@]}"; do
   for y in "${ENVCONF[@]}"; do
     if [[ "$y" =~ .*$APP.* ]]; then
+      echo "Match!"
       OUTDATA+=$(echo -e "${ENVCONF[@]}" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
-      echo "match!"
+      echo "Replace: $y : $APP "
     else
+      echo "No match!"
       OUTDATA+="$i"
     fi
   done
