@@ -31,7 +31,7 @@ VALUEAWK="/usr/bin/awk -f /usr/local/bin/value.awk"
 
 # array push the env vars based on $APP match
 while read -r line; do
-  ENVCONF+=($line)
+  ENVCONF+=("$line")
 done < "$(env | grep "$APP")"
 
 # for each line, replace if match $APP match in config array $CONFDATA
