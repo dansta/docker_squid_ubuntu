@@ -14,7 +14,7 @@ INVALID="0"
 # second parameter is environment variabel to use for replacement in the config file
 
 # set up env
-set -x # print loops
+#set -x # print loops
 set -e # exit immediately on bg job errors
 #set -u # exit on unset vars, like empty configs, no env var etc
 set -v # debugging
@@ -43,11 +43,6 @@ for i in "${CONFDATA[@]}"; do
     fi
   done
 done
-
-# debug check if its ok after this
-#for i in "${CONFDATA[@]}"; do
-#  echo -e "$i"
-#done
 
 #clear out all comments and write to file
 #for i in "${CONFDATA[@]}"; do
