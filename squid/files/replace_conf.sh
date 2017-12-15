@@ -48,6 +48,5 @@ done
 #for i in "${CONFDATA[@]}"; do
 #  "${$!{CONFDATA}}//^#.*//}" > "$CONF"
 #done
-cat "$CONF"
 echo "Done"
 echo "Script ran for $SECONDS seconds"
