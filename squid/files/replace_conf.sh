@@ -31,12 +31,14 @@ VALUEAWK="/usr/bin/awk -f /usr/local/bin/value.awk"
 
 # array push the env vars based on $APP match
 for i in $(env | grep "$APP"); do
-  ENVCONF+=($line)
+  ENVCONF+=($i)
 done
 
 # for each line, replace if match $APP match in config array $CONFDATA
 for i in "${CONFDATA[@]}"; do
+  echo for i
   for y in "${ENVCONF[@]}"; do
+    echo for y
     if [[ "$i" =~ .*$APP.* ]]; then
       echo "Match!"
       OUTDATA+=$(echo -e "$y" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
@@ -53,7 +55,7 @@ for i in "${OUTDATA[@]}"; do
   done
 #clear out all comments and write to file
 #for i in "${CONFDATA[@]}"; do
-#  sed s/^#.*//g > "$CONF"
+#  sed s/^#.*$//g > "$CONF"
 #done
 echo "Done"
 echo "Script ran for $SECONDS seconds"
