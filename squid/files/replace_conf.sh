@@ -36,15 +36,11 @@ done
 
 # for each line, replace if match $APP match in config array $CONFDATA
 for i in "${CONFDATA[@]}"; do
-  echo for i
   for y in "${ENVCONF[@]}"; do
-    echo for y
     if [[ "$i" =~ .*$APP.* ]]; then
-      echo "Match!"
       OUTDATA+=$(echo -e "$y" | sed s/"$(echo -e "$i" | $KEYAWK)"/"$(echo -e "$i" | $VALUEAWK)"/g)
       echo "Replace: $y : $APP "
     else
-      echo "No match!"
       OUTDATA+="$i"
     fi
   done
@@ -53,6 +49,8 @@ done
 for i in "${OUTDATA[@]}"; do
   echo -e "$i" > "$CONF"
   done
+
+cat "$CONF"
 #clear out all comments and write to file
 #for i in "${CONFDATA[@]}"; do
 #  sed s/^#.*$//g > "$CONF"
