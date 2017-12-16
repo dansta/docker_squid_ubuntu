@@ -52,8 +52,8 @@ for i in "${OUTDATA[@]}"; do
   echo -e "$i" > "$CONF"
   done
 #clear out all comments and write to file
-for i in "${CONFDATA[@]}"; do
-  sed s/^#.*//g > "$CONF"
-done
+"for i in "${CONFDATA[@]}"; do
+#  sed s/^#.*//g > "$CONF"
+#done
 echo "Done"
 echo "Script ran for $SECONDS seconds"
