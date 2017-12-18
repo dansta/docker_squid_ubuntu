@@ -9,10 +9,10 @@ FD = sys.argv[1]
 KEYWORD = sys.argv[2]
 ENV = {}
 
-
 # open the config for reading
 try:
-    CONFIGFILE = open(FD)
+    with open(FD, 'r') as CONFIGFILE:
+        CONFIGDATA = CONFIGFILE.read()
 except IOError:
     exit(1)
 
@@ -20,12 +20,12 @@ except IOError:
 for i in sorted(os.environ):
     if KEYWORD in i:
         y = os.environ[i]
-        ENV = {i:y}
+        ENV[i] = y
 
 # find and replace in the config file
-for i in CONFIGFILE:
-    if KEYWORD in i:
-        line = i
+for i in ENV:
+    if i in CONFIGDATA:
+        CONFIGDATA.replace(i, ENV[i])
 
-
-print(ENV)
+print(CONFIGDATA)
+CONFIGFILE.close()
