@@ -3,6 +3,8 @@
 
 import os
 import sys
+import re
+
 
 # read call parameters
 FD = sys.argv[1]
@@ -13,6 +15,7 @@ ENV = {}
 try:
     with open(FD, 'r') as CONFIGFILE:
         CONFIGDATA = CONFIGFILE.read()
+        CONFIGDATA = re.sub(r'(?m)^ *#.*\n?', '', CONFIGFILE)
 except IOError:
     exit(1)
 
