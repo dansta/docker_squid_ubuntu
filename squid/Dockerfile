@@ -30,7 +30,7 @@ RUN apt-get update
 RUN apt-get install -y squid
 RUN apt-get install -y rsyslog
 ADD files/etc/squid.conf ${SQUID_CONF} 
-ADD files/replace_conf.sh /usr/local/bin/replace_conf
+ADD files/replace.py /usr/local/bin/replace_conf
 ADD files/value.awk /usr/local/bin/value.awk
 ADD files/key.awk /usr/local/bin/key.awk
 RUN chmod +rx /usr/local/bin/replace_conf
