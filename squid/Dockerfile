@@ -29,6 +29,7 @@ LABEL maintainer=dansta
 RUN apt-get update
 RUN apt-get install -y squid
 RUN apt-get install -y rsyslog
+RUN apt-get install -y python3
 ADD files/etc/squid.conf ${SQUID_CONF} 
 ADD files/replace.py /usr/local/bin/replace_conf
 ADD files/value.awk /usr/local/bin/value.awk
@@ -37,6 +38,8 @@ RUN chmod +rx /usr/local/bin/replace_conf
 RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
 RUN cat ${SQUID_CONF}
 
+# remove python3 again, because we dont need it for runtime
+RUN apt-get remove -y python3
 # document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
 EXPOSE ${SQUID_ICP_PORT}/tcp
