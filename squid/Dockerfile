@@ -50,6 +50,9 @@ RUN rm -f /usr/local/bin/replace_conf
 RUN cat ${SQUID_CONF}
 
 # Setup username and password
+RUN touch /etc/squid3/users
+RUN chown ${SQUID_EFFECTIVE_USER}:${SQUID_EFFECTIVE_GROUP} /etc/squid3/users
+RUN chmod g+rwx /etc/squid3/users
 RUN htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 
 # Remove this line if you want to be able to rerun replace_conf
