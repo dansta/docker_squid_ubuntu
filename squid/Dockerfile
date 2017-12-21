@@ -65,3 +65,6 @@ RUN service rsyslog start
 # Test squid for build, run in foreground
 CMD /usr/sbin/squid -k parse
 CMD /usr/sbin/squid -NCd1
+
+# Default startup
+ENTRYPOINT ["/usr/sbin/squid", "-NCd1"]
