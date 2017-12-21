@@ -50,7 +50,7 @@ RUN rm -f /usr/local/bin/replace_conf
 RUN cat ${SQUID_CONF}
 
 # Setup username and password
-RUN htpasswd -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
+RUN htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 
 # Remove this line if you want to be able to rerun replace_conf
 # to enable runtime environment variables being read into the application
