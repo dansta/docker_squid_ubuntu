@@ -66,4 +66,4 @@ RUN service rsyslog start
 CMD /usr/sbin/squid -k parse
 
 # Default startup, wait until store has been built, debug a little, syslog, set port, run in foreground
-ENTRYPOINT ["/usr/sbin/squid", "-s", "-N", "-C", "-d1", "-F"]
+ENTRYPOINT ["/usr/sbin/squid", "-s", "-N", "-d1", "-F"]
