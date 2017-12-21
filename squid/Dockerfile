@@ -10,9 +10,9 @@ ENV SQUID_CONF ${SQUID_CONF:-/etc/squid/squid.conf}
 ARG SQUID_PROXY_PORT
 ENV SQUID_PROXY_PORT ${SQUID_PROXY_PORT:-3128}
 ARG SQUID_USERNAME
-ENV SQUID_USERNAME ${SQUID_USERNAME:-username}
+ENV SQUID_USERNAME ${SQUID_USERNAME:-someuser}
 ARG SQUID_PASSWORD 
-ENV SQUID_PASSWORD ${SQUID_PASSWORD:-password}
+ENV SQUID_PASSWORD ${SQUID_PASSWORD:-somepass}
 ARG SQUID_ICP_PORT
 ENV SQUID_ICP_PORT ${SQUID_ICP_PORT:-3130}
 ARG SQUID_PEER_NAME
@@ -47,6 +47,9 @@ RUN chmod +rx /usr/local/bin/replace_conf
 RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
 RUN rm -f /usr/local/bin/replace_conf
 RUN cat ${SQUID_CONF}
+
+# Setup username and password
+RUN htpasswd -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 
 # Remove this line if you want to be able to rerun replace_conf
 # to enable runtime environment variables being read into the application
