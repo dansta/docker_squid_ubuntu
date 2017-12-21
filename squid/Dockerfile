@@ -5,19 +5,32 @@ FROM ubuntu:latest
 # (no runtime env support)
 
 # Set env. replace right most column with values specific to your environment
-ENV SQUID_CONF '/etc/squid/squid.conf'
-ENV SQUID_PROXY_PORT 3128
-ENV SQUID_USERNAME username
-ENV SQUID_PASSWORD password
-ENV SQUID_ICP_PORT 3130
-ENV SQUID_PEER_NAME squidpeer
-ENV SQUID_EXTERNAL_LOGSERVER_IP localhost
-ENV SQUID_EXTERNAL_LOGSERVER_PORT 514
-ENV SQUID_EMAIL_ADMIN foo@bar.com
-ENV SQUID_EMAIL_FROMADDRESS squid@hostname.local
-ENV SQUID_EFFECTIVE_USER proxy
-ENV SQUID_EFFECTIVE_GROUP proxy 
-ENV SQUID_ERROR_TEXT dansta_ubuntu_squid_proxy
+ARG SQUID_CONF
+ENV SQUID_CONF ${SQUID_CONF:-/etc/squid/squid.conf}
+ARG SQUID_PROXY_PORT
+ENV SQUID_PROXY_PORT ${SQUID_PROXY_PORT:-3128}
+ARG SQUID_USERNAME
+ENV SQUID_USERNAME ${SQUID_USERNAME:-username}
+ARG SQUID_PASSWORD 
+ENV SQUID_PASSWORD ${SQUID_PASSWORD:-password}
+ARG SQUID_ICP_PORT
+ENV SQUID_ICP_PORT ${SQUID_ICP_PORT:-3130}
+ARG SQUID_PEER_NAME
+ENV SQUID_PEER_NAME ${SQUID_PEER_NAME:-squidpeer}
+ARG SQUID_EXTERNAL_LOGSERVER_IP
+ENV SQUID_EXTERNAL_LOGSERVER_IP ${SQUID_PEER_NAME:-localhost}
+ARG SQUID_EXTERNAL_LOGSERVER_PORT
+ENV SQUID_EXTERNAL_LOGSERVER_PORT ${SQUID_EXTERNAL_LOGSERVER_PORT:-514}
+ARG SQUID_EMAIL_ADMIN 
+ENV SQUID_EMAIL_ADMIN ${SQUID_EMAIL_ADMIN:-foo@bar.com}
+ARG SQUID_EMAIL_FROMADDRESS
+ENV SQUID_EMAIL_FROMADDRESS ${SQUID_EMAIL_FROMADDRESS:-squid@hostname.local}
+ARG SQUID_EFFECTIVE_USER
+ENV SQUID_EFFECTIVE_USER ${SQUID_EFFECTIVE_USER:-proxy}
+ARG SQUID_EFFECTIVE_GROUP
+ENV SQUID_EFFECTIVE_GROUP ${SQUID_EFFECTIVE_GROUP:-proxy}
+ARG SQUID_ERROR_TEXT
+ENV SQUID_ERROR_TEXT ${SQUID_EFFECTIVE_GROUP:-dansta_ubuntu_squid_proxy}
 LABEL maintainer=dansta
 
 # Change to some webserver that you know is stable. mine isnt which is why per default this is commented out
@@ -32,6 +45,7 @@ ADD files/etc/squid.conf ${SQUID_CONF}
 ADD files/replace.py /usr/local/bin/replace_conf
 RUN chmod +rx /usr/local/bin/replace_conf
 RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
+RUN rm -f /usr/local/bin/replace_conf
 RUN cat ${SQUID_CONF}
 
 # Remove this line if you want to be able to rerun replace_conf
