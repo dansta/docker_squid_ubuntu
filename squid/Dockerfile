@@ -62,7 +62,7 @@ RUN htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 # Replace_conf might become a standalone binary in the future
 RUN apt-get remove -y python3
 RUN apt-get remove -y apache2-utils
-
+RUN apt-get autoremove -y
 # Document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
 EXPOSE ${SQUID_ICP_PORT}/tcp
