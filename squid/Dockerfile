@@ -65,5 +65,5 @@ RUN service rsyslog start
 # Test squid for build
 CMD /usr/sbin/squid -k parse
 
-# Default startup, wait until store has been built, debug a little, syslog, set port & user, run in foreground
-ENTRYPOINT ["/usr/sbin/squid", "-s", "-N", "-C", "-d1", "-n ${SQUID_EFFECTIVE_USER}", "-F", "-a ${SQUID_PROXY_PORT}"]
+# Default startup, wait until store has been built, debug a little, syslog, set port, run in foreground
+ENTRYPOINT ["/usr/sbin/squid", "-s", "-N", "-C", "-d1", "-F"]
