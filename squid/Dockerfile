@@ -41,6 +41,7 @@ RUN apt-get update
 RUN apt-get install -y squid
 RUN apt-get install -y rsyslog
 RUN apt-get install -y python3
+RUN apt-get install -y apache2-utils
 ADD files/etc/squid.conf ${SQUID_CONF} 
 ADD files/replace.py /usr/local/bin/replace_conf
 RUN chmod +rx /usr/local/bin/replace_conf
@@ -56,6 +57,7 @@ RUN htpasswd -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 # Otherwise we do not need this package for runtime activities
 # Replace_conf might become a standalone binary in the future
 RUN apt-get remove -y python3
+RUN apt-get remove -y apache2-utils
 
 # Document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
