@@ -74,8 +74,5 @@ RUN service rsyslog start
 # Test squid for build
 CMD /usr/sbin/squid -k parse
 
-# Unset environment variables in case someone stores secrets here
-RUN unset SQUID_*
-
 # Default startup, wait until store has been built, debug a little, syslog, set port, run in foreground
 ENTRYPOINT ["/usr/sbin/squid", "-s", "-N", "-d1", "-F"]
