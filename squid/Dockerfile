@@ -1,4 +1,5 @@
-FROM ubuntu:latest
+#FROM ubuntu:latest
+FROM arm64v8/ubuntu
 # We base this on ubuntu
 
 # Authenticated statically configured proxy
