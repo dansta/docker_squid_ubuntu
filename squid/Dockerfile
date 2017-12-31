@@ -56,6 +56,11 @@ RUN chown ${SQUID_EFFECTIVE_USER}:${SQUID_EFFECTIVE_GROUP} /etc/squid3/ /etc/squ
 RUN chmod g+rwx /etc/squid3/ /etc/squid3/users
 RUN htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 
+# Add wrapper for execution
+ADD files/wrapper.sh /usr/local/bin/wrapper
+RUN chmod +rx /usr/local/bin/wrapper
+
+
 # Remove this line if you want to be able to rerun replace_conf
 # to enable runtime environment variables being read into the application
 # Otherwise we do not need this package for runtime activities
@@ -72,9 +77,7 @@ EXPOSE ${SQUID_ICP_PORT}/tcp
 RUN service rsyslog start
 
 # Test squid for build
-CMD /usr/sbin/squid -k parse
-CMD /usr/sbin/squid -z
-CMD /usr/sbin/squid -sNd1F
+CMD /usr/local/bin/wrapper
 
 # Default startup, wait until store has been built, debug a little, syslog, set port, run in foreground
-#ENTRYPOINT ["/usr/sbin/squid", "-z", "-s", "-N", "-d1", "-F"]
+ENTRYPOINT ["/usr/local/bin/wrapper"]
