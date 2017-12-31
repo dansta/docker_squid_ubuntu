@@ -16,7 +16,7 @@ ENV SQUID_PASSWORD ${SQUID_PASSWORD:-somepass}
 ARG SQUID_ICP_PORT
 ENV SQUID_ICP_PORT ${SQUID_ICP_PORT:-3130}
 ARG SQUID_PEER_NAME
-ENV SQUID_PEER_NAME ${SQUID_PEER_NAME:-squidpeer}
+ENV SQUID_PEER_NAME ${SQUID_PEER_NAME:-localhost}
 ARG SQUID_EXTERNAL_LOGSERVER_IP
 ENV SQUID_EXTERNAL_LOGSERVER_IP ${SQUID_PEER_NAME:-localhost}
 ARG SQUID_EXTERNAL_LOGSERVER_PORT
@@ -77,4 +77,4 @@ CMD /usr/sbin/squid -z
 CMD /usr/sbin/squid -sNd1F
 
 # Default startup, wait until store has been built, debug a little, syslog, set port, run in foreground
-#ENTRYPOINT ["/usr/sbin/squid", "-s", "-N", "-d1", "-F"]
+#ENTRYPOINT ["/usr/sbin/squid", "-z", "-s", "-N", "-d1", "-F"]
