@@ -7,6 +7,10 @@ FROM ubuntu:latest
 # Set env. replace right most column with values specific to your environment
 ARG SQUID_CONF
 ENV SQUID_CONF ${SQUID_CONF:-/etc/squid/squid.conf}
+ARG SQUID_FRONTEND_CONF
+ENV SQUID_FRONTEND_CONF ${SQUID_FRONTEND_CONF:-/etc/squid/frontend.conf}
+ARG SQUID_BACKEND_CONF
+ENV SQUID_BACKEND_CONF ${SQUID_BACKEND_CONF:-/etc/squid/backend.conf}
 ARG SQUID_PROXY_PORT
 ENV SQUID_PROXY_PORT ${SQUID_PROXY_PORT:-3128}
 ARG SQUID_USERNAME
@@ -14,7 +18,7 @@ ENV SQUID_USERNAME ${SQUID_USERNAME:-someuser}
 ARG SQUID_PASSWORD 
 ENV SQUID_PASSWORD ${SQUID_PASSWORD:-somepass}
 ARG SQUID_ICP_PORT
-ENV SQUID_ICP_PORT ${SQUID_ICP_PORT:-3130}
+ENV SQUID_ICP_PORT ${SQUID_ICP_PORT:-0}
 ARG SQUID_PEER_NAME
 ENV SQUID_PEER_NAME ${SQUID_PEER_NAME:-localhost}
 ARG SQUID_EXTERNAL_LOGSERVER_IP
@@ -45,11 +49,14 @@ RUN apt-get install -y rsyslog
 RUN apt-get install -y python3
 RUN apt-get install -y apache2-utils
 ADD files/etc/squid.conf ${SQUID_CONF} 
+ADD files/frontend.conf /etc/squid/frontend.conf
+ADD files/backend.conf /etc/squid/backend.conf
 ADD files/replace.py /usr/local/bin/replace_conf
 RUN chmod +rx /usr/local/bin/replace_conf
 RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
+RUN /usr/local/bin/replace_conf ${SQUID_FRONTEND_CONF} SQUID
+RUN /usr/local/bin/replace_conf ${SQUID_BACKEND_CONF} SQUID
 RUN rm -f /usr/local/bin/replace_conf
-RUN cat ${SQUID_CONF}
 
 # Setup username and password
 RUN mkdir -p /etc/squid3/
