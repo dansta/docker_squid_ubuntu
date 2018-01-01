@@ -48,7 +48,7 @@ RUN apt-get install -y squid
 RUN apt-get install -y rsyslog
 RUN apt-get install -y python3
 RUN apt-get install -y apache2-utils
-ADD files/etc/squid.conf ${SQUID_CONF} 
+ADD files/squid.conf ${SQUID_CONF} 
 ADD files/frontend.conf /etc/squid/frontend.conf
 ADD files/backend.conf /etc/squid/backend.conf
 ADD files/replace.py /usr/local/bin/replace_conf
