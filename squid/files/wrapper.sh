@@ -7,7 +7,7 @@ if ( /usr/sbin/squid -k parse ); then
   if ( /usr/sbin/squid -z ); then
     echo Created cache_dir
     sleep 60
-    if ( /usr/sbin/squid -sNd2F --enable-cache-digests --enable-htcp --enable-icmp --enable-async-io ); then
+    if ( /usr/sbin/squid -sNd2F ); then
        echo Exited squid
 # for debugging purposes only
        cat /var/log/squid/*
