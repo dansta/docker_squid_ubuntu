@@ -15,6 +15,8 @@ ARG SQUID_BACKEND_CONF
 ENV SQUID_BACKEND_CONF ${SQUID_BACKEND_CONF:-/etc/squid/backend.conf}
 ARG SQUID_PROXY_PORT
 ENV SQUID_PROXY_PORT ${SQUID_PROXY_PORT:-3128}
+ARG SQUID_ICP_PORT
+ENV SQUID_ICP_PORT ${SQUID_ICP_PORT:-3130}
 ARG SQUID_USERNAME
 ENV SQUID_USERNAME ${SQUID_USERNAME:-someuser}
 ARG SQUID_PASSWORD 
@@ -82,6 +84,9 @@ RUN apt-get autoremove -y
 # Document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
 EXPOSE ${SQUID_HTCP_PORT}/tcp
+EXPOSE ${SQUID_ICP_PORT}/tcp
+EXPOSE 4002:4002/tcp
+EXPOSE 4003:4003/tcp
 
 # Logging for debug. logging should be handled by your support team
 # might possibly indicate a working container if you build@home
