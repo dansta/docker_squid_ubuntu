@@ -2,7 +2,7 @@
 
 set -x
 
-if ( /usr/sbin/squid -k parse ); then
+if ( /usr/sbin/squid -d2 -k parse ); then
   echo Parsing complete
   if ( /usr/sbin/squid -z ); then
     echo Created cache_dir

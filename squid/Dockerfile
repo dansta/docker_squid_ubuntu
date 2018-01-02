@@ -7,6 +7,8 @@ FROM ubuntu:latest
 # Set env. replace right most column with values specific to your environment
 ARG SQUID_CONF
 ENV SQUID_CONF ${SQUID_CONF:-/etc/squid/squid.conf}
+ARG SQUID_CACHEMGR_PASSWD
+ENV SQUID_CACHEMGR_PASSWD ${SQUID_CACHEMGR_PASSWD:-secretpassword}
 ARG SQUID_FRONTEND_CONF
 ENV SQUID_FRONTEND_CONF ${SQUID_FRONTEND_CONF:-/etc/squid/frontend.conf}
 ARG SQUID_BACKEND_CONF
