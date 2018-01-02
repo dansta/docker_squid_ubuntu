@@ -18,7 +18,7 @@ ENV SQUID_USERNAME ${SQUID_USERNAME:-someuser}
 ARG SQUID_PASSWORD 
 ENV SQUID_PASSWORD ${SQUID_PASSWORD:-somepass}
 ARG SQUID_HTCP_PORT
-ENV SQUID_HTCP_PORT ${SQUID_ICP_PORT:-4827}
+ENV SQUID_HTCP_PORT ${SQUID_HTCP_PORT:-4827}
 ARG SQUID_PEER_NAME
 ENV SQUID_PEER_NAME ${SQUID_PEER_NAME:-localhost}
 ARG SQUID_EXTERNAL_LOGSERVER_IP
@@ -79,7 +79,7 @@ RUN apt-get remove -y apache2-utils
 RUN apt-get autoremove -y
 # Document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
-EXPOSE ${SQUID_ICP_PORT}/tcp
+EXPOSE ${SQUID_HTCP_PORT}/tcp
 
 # Logging for debug. logging should be handled by your support team
 # might possibly indicate a working container if you build@home
