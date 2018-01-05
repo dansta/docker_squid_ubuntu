@@ -48,6 +48,7 @@ RUN apt-get install -y apache2-utils
 
 ADD files/squid.conf ${SQUID_CONF} 
 ADD files/replace.py /usr/local/bin/replace_conf
+ADD files/hosts /etc/hosts
 RUN chmod +rx /usr/local/bin/replace_conf
 RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
 RUN rm -f /usr/local/bin/replace_conf
