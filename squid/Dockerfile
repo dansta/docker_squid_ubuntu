@@ -2,7 +2,6 @@ FROM ubuntu:latest
 # We base this on ubuntu
 
 # Authenticated statically configured proxy
-# (no runtime env support)
 
 # Set env. replace right most column with values specific to your environment
 ARG SQUID_CONF
@@ -54,16 +53,24 @@ RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
 RUN rm -f /usr/local/bin/replace_conf
 
 # Setup username and password
-#RUN mkdir -p /etc/squid3/
-#RUN touch /etc/squid3/users
-#RUN chown ${SQUID_EFFECTIVE_USER}:${SQUID_EFFECTIVE_GROUP} /etc/squid3/ /etc/squid3/users
-#RUN chmod g+rwx /etc/squid3/ /etc/squid3/users
-#RUN htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
+RUN mkdir -p /etc/squid3/
+RUN touch /etc/squid3/users
+RUN chown ${SQUID_EFFECTIVE_USER}:${SQUID_EFFECTIVE_GROUP} /etc/squid3/ /etc/squid3/users
+RUN chmod g+rwx /etc/squid3/ /etc/squid3/users
+RUN htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 
 # Add wrapper for execution
 ADD files/wrapper.sh /usr/local/bin/wrapper
 RUN chmod +rx /usr/local/bin/wrapper
 
+# Mount volumes to keep store and logs away from the thin layer overlay
+# This is important for performance and memory footprint
+# And dont forget to use --mount on the service otherwise it is going to
+# recreate the store on every upstart
+VOLUME /var/log/
+VOLUME /
+# Rotate the logs every 2nd hour
+RUN echo "* */2 * * * /usr/local/squid/bin/squid -k rotate" >> /var/spool/cron/root
 
 # Remove this line if you want to be able to rerun replace_conf
 # to enable runtime environment variables being read into the application
@@ -78,11 +85,5 @@ EXPOSE ${SQUID_HTCP_PORT}/tcp
 EXPOSE ${SQUID_ICP_PORT}/tcp
 EXPOSE 4002:4002/tcp
 EXPOSE 4003:4003/tcp
-
 # Test squid for build
-CMD /usr/sbin/squid -k parse
-CMD /bin/bash
-
-# Default startup, wait until store has been built, debug a little, syslog, set port, run in foreground
-ENTRYPOINT ["/usr/local/bin/wrapper"]
-
+CMD /usr/local/bin/wrapper
