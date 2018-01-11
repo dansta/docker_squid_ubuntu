@@ -67,7 +67,7 @@ RUN chmod +rx /usr/local/bin/wrapper
 # And dont forget to use --mount on the service otherwise it is going to
 # recreate the store on every upstart
 VOLUME /var/log/
-VOLUME /
+VOLUME /var/spool/squid/
 # Rotate the logs every 2nd hour
 RUN echo "* */2 * * * /usr/local/squid/bin/squid -k rotate" >> /var/spool/cron/root
 
