@@ -36,8 +36,7 @@ ARG SQUID_EMAIL_FROMADDRESS
 ENV SQUID_EMAIL_FROMADDRESS ${SQUID_EMAIL_FROMADDRESS:-squid@localhost.localdomain}
 LABEL maintainer=dansta
 
-# Change to some webserver that you know is stable. mine isnt which is why per default this is commented out
-#HEALTHCHECK --interval=15m --timeout=3s CMD curl -x 127.0.0.1:3128 -f http://www.kvantmekanik.se || exit 1
+HEALTHCHECK --interval=1m --timeout=3s CMD /usr/local/bin/squid -k check || exit 1
 
 # Update and install packages
 RUN apt-get update
