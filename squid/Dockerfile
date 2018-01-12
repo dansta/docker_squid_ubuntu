@@ -72,8 +72,7 @@ RUN echo "* */2 * * * /usr/local/squid/bin/squid -k rotate" >> /var/spool/cron/r
 # to enable runtime environment variables being read into the application
 # Otherwise we do not need this package for runtime activities
 # Replace_conf might become a standalone binary in the future
-RUN apt-get remove -y python3
-RUN apt-get remove -y apache2-utils
+RUN apt-get remove -y python3 apache2-utils
 RUN apt-get autoremove -y
 # Document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp
