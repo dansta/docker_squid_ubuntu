@@ -39,10 +39,7 @@ LABEL maintainer=dansta
 HEALTHCHECK --interval=1m --timeout=3s CMD /usr/local/bin/squid -k check || exit 1
 
 # Update and install packages
-RUN apt-get update
-RUN apt-get install -y squid
-RUN apt-get install -y python3
-RUN apt-get install -y apache2-utils
+RUN apt-get update && apt-get install -y squid python3 apache2-utils
 
 ADD files/squid.conf ${SQUID_CONF} 
 ADD files/replace.py /usr/local/bin/replace_conf
