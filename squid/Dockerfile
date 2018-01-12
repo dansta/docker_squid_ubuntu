@@ -75,10 +75,10 @@ RUN echo "* */2 * * * /usr/local/squid/bin/squid -k rotate" >> /var/spool/cron/r
 RUN apt-get remove -y python3 apache2-utils
 RUN apt-get autoremove -y
 # Document port usage for docker in case you are going to use it as a service
-EXPOSE ${SQUID_PROXY_PORT}/tcp
-EXPOSE ${SQUID_HTCP_PORT}/tcp
-EXPOSE ${SQUID_ICP_PORT}/tcp
-EXPOSE 4002:4002/tcp
-EXPOSE 4003:4003/tcp
+EXPOSE ${SQUID_PROXY_PORT}/tcp \
+       ${SQUID_HTCP_PORT}/tcp \
+       ${SQUID_ICP_PORT}/tcp \
+       4002:4002/tcp \
+       4003:4003/tcp
 # Test squid for build
 CMD /usr/local/bin/wrapper
