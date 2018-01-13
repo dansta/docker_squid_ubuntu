@@ -26,6 +26,7 @@ docker service create \
             --update-parallelism 2 \
             --env SQUID_PASSWORD="$(pwgen -N 1)" \
             --network squid \
+            --add-host="multicast:224.0.0.1"
             --mount source=squid,target=/var/log/docker/squid/ \
             --mount source=squid,target=/var/docker/squid/ \
             --name "squid" \
