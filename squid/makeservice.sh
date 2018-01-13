@@ -8,11 +8,11 @@ apt-get install pwgen
 # Create image
 docker build -t squid:0.0.100 .
 
-
-# Create east-west network
+# Create east-west and multicast network
 docker network create \
             --opt encrypted \
             --subnet 10.0.0.0/24 \
+            --subnet 224.0.0.0/24 \
             --driver overlay \
             squid 
 
