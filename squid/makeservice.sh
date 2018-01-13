@@ -22,8 +22,8 @@ docker volume create squid
 # Create service
 docker service create \
             --mode global \
-            --update-delay 10s \
-            --update-parallelism 2 \
+            --update-delay 60s \
+            --update-parallelism 1 \
             --env SQUID_PASSWORD="$(pwgen -N 1)" \
             --network squid \
             --add-host="multicast:224.0.0.1"
