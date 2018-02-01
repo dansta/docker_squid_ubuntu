@@ -45,8 +45,8 @@ RUN apt-get update && apt-get install -y squid \
 ADD files/squid.conf ${SQUID_CONF} 
 ADD files/replace.py /usr/local/bin/replace_conf
 ADD files/hosts /etc/hosts
-RUN chmod +rx /usr/local/bin/replace_conf && \
-    /usr/local/bin/replace_conf ${SQUID_CONF} SQUID && \
+RUN chmod +rx /usr/local/bin/replace_conf
+RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID && \
     rm -f /usr/local/bin/replace_conf
 
 # Setup username and password
