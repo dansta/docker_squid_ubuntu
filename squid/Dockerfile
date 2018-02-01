@@ -20,8 +20,6 @@ ARG SQUID_HTCP_PORT
 ENV SQUID_HTCP_PORT ${SQUID_HTCP_PORT:-4827}
 ARG SQUID_PEER_NAME
 ENV SQUID_PEER_NAME ${SQUID_PEER_NAME:-localhost}
-ARG SQUID_EXTERNAL_LOGSERVER_IP
-ENV SQUID_EXTERNAL_LOGSERVER_IP ${SQUID_EXTERNAL_LOGSERVER_IP:-127.0.0.1}
 ARG SQUID_EMAIL_ADMIN 
 ENV SQUID_EMAIL_ADMIN ${SQUID_EMAIL_ADMIN:-foo@bar.com}
 ARG SQUID_EFFECTIVE_USER
@@ -37,7 +35,7 @@ ENV SQUID_EMAIL_FROMADDRESS ${SQUID_EMAIL_FROMADDRESS:-squid@localhost.localdoma
 LABEL maintainer=dansta
 
 # Healthcheck is not working, disabling for now
-#HEALTHCHECK --interval=10s --timeout=3s CMD /usr/local/bin/squid -k check || exit 1
+HEALTHCHECK --interval=10s --timeout=3s CMD /usr/local/bin/squid -k check || exit 1
 
 # Update and install packages
 RUN apt-get update && apt-get install -y squid \
