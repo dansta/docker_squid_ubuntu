@@ -40,21 +40,23 @@ LABEL maintainer=dansta
 #HEALTHCHECK --interval=10s --timeout=3s CMD /usr/local/bin/squid -k check || exit 1
 
 # Update and install packages
-RUN apt-get update && apt-get install -y squid python3 apache2-utils
+RUN apt-get update && apt-get install -y squid \
+                                         python3 \
+                                         apache2-utils
 
 ADD files/squid.conf ${SQUID_CONF} 
 ADD files/replace.py /usr/local/bin/replace_conf
 ADD files/hosts /etc/hosts
-RUN chmod +rx /usr/local/bin/replace_conf
-RUN /usr/local/bin/replace_conf ${SQUID_CONF} SQUID
-RUN rm -f /usr/local/bin/replace_conf
+RUN chmod +rx /usr/local/bin/replace_conf && \
+    /usr/local/bin/replace_conf ${SQUID_CONF} SQUID && \
+    rm -f /usr/local/bin/replace_conf
 
 # Setup username and password
 RUN mkdir -p /etc/squid3/
-RUN touch /etc/squid3/users
-RUN chown ${SQUID_EFFECTIVE_USER}:${SQUID_EFFECTIVE_GROUP} /etc/squid3/ /etc/squid3/users
-RUN chmod g+rwx /etc/squid3/ /etc/squid3/users
-RUN htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
+RUN touch /etc/squid3/users && \
+    chown ${SQUID_EFFECTIVE_USER}:${SQUID_EFFECTIVE_GROUP} /etc/squid3/ /etc/squid3/users && \
+    chmod g+rwx /etc/squid3/ /etc/squid3/users && \
+    htpasswd -c -db /etc/squid3/users ${SQUID_USERNAME} ${SQUID_PASSWORD}
 
 # Add wrapper for execution
 ADD files/wrapper.sh /usr/local/bin/wrapper
@@ -73,8 +75,10 @@ RUN echo "* */2 * * * /usr/local/squid/bin/squid -k rotate" >> /var/spool/cron/r
 # to enable runtime environment variables being read into the application
 # Otherwise we do not need this package for runtime activities
 # Replace_conf might become a standalone binary in the future
-RUN apt-get remove -y python3 apache2-utils
-RUN apt-get autoremove -y
+RUN apt-get remove -y python3 \
+            apache2-utils && \
+            apt-get autoremove -y
+
 # Document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp \
        ${SQUID_HTCP_PORT}/tcp \
