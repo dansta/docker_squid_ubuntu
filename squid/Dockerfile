@@ -34,8 +34,6 @@ ARG SQUID_EMAIL_FROMADDRESS
 ENV SQUID_EMAIL_FROMADDRESS ${SQUID_EMAIL_FROMADDRESS:-squid@localhost.localdomain}
 LABEL maintainer=dansta
 
-# Healthcheck is not working, disabling for now
-HEALTHCHECK --interval=10s --timeout=3s CMD /usr/local/bin/squid -k check || exit 1
 
 # Update and install packages
 RUN apt-get update && apt-get install -y squid \
