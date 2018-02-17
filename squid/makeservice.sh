@@ -27,8 +27,8 @@ docker service create \
             --env SQUID_PASSWORD="$(pwgen -N 1)" \
             --network squid \
             --add-host="multicast:224.0.0.1"
-            --mount source=squid,target=/var/log/docker/squid/ \
-            --mount source=squid,target=/var/docker/squid/ \
+            --mount source=squid,target=/var/log/squid/ \
+            --mount source=squid,target=/var/run/squid/ \
             --name "squid" \
             --publish published=3128,target=3128 \
             --publish published=3130,target=3130 \
