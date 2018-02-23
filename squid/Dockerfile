@@ -38,7 +38,8 @@ LABEL maintainer=dansta
 # Update and install packages
 RUN apt-get update && apt-get install -y squid \
                                          python3 \
-                                         apache2-utils
+                                         apache2-utils \
+                                         squidclient
 
 ADD files/squid.conf ${SQUID_CONF} 
 ADD files/replace.py /usr/local/bin/replace_conf
@@ -74,6 +75,9 @@ RUN echo "* */2 * * * /usr/local/squid/bin/squid -k rotate" >> /var/spool/cron/r
 RUN apt-get remove -y python3 \
             apache2-utils && \
             apt-get autoremove -y
+
+# Healtcheck that makes sure we can talk to cache
+HEALTHCHECK --start-period=60s CMD squidclient -h localhost cache_object://localhost/ mgr:info || exit 1
 
 # Document port usage for docker in case you are going to use it as a service
 EXPOSE ${SQUID_PROXY_PORT}/tcp \
