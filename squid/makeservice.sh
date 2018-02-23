@@ -28,7 +28,7 @@ docker service create \
             --network squid \
             --add-host="multicast:224.0.0.1"
             --mount source=squid,target=/var/log/squid/ \
-            --mount source=squid,target=/var/run/squid/ \
+            --mount source=squid,target=/var/spool/squid/ \
             --name "squid" \
             --publish published=3128,target=3128 \
             --publish published=3130,target=3130 \
