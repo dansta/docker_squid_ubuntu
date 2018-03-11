@@ -12,7 +12,7 @@ docker build -t squid:0.0.100 .
 docker network create \
             --opt encrypted \
             --subnet 10.0.0.0/24 \
-            --subnet 224.0.0.0/24 \
+            --subnet 224.0.0.0/4 \
             --driver overlay \
             squid 
 
@@ -26,7 +26,7 @@ docker service create \
             --update-parallelism 1 \
             --env SQUID_PASSWORD="$(pwgen -N 1)" \
             --network squid \
-            --add-host="multicast:224.0.0.1"
+            --add-host="multicast.fqdn.tld:224.9.9.9"
             --mount source=squid,target=/var/log/squid/ \
             --mount source=squid,target=/var/spool/squid/ \
             --name "squid" \
