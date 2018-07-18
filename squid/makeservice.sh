@@ -1,32 +1,17 @@
 #!/bin/bash
 
-# Run as root in the same directory as the Dockerfile
-
-# Install password gen
-apt-get install pwgen
-
 # Create image
-docker build -t squid:0.0.100 .
+docker build -t 192.168.1.1:5000/squid:1 .
+docker push 192.168.10.1:5000/squid:1
 
-# Create east-west and multicast network
-docker network create \
-            --opt encrypted \
-            --subnet 10.0.0.0/24 \
-            --subnet 224.0.0.0/4 \
-            --driver overlay \
-            squid 
-
-# Create volume for squid
 docker volume create squid
 
 # Create service
 docker service create \
-            --mode global \
+            --replicas 4 \
             --update-delay 60s \
             --update-parallelism 1 \
-            --env SQUID_PASSWORD="$(pwgen -N 1)" \
-            --network squid \
-            --add-host="multicast.fqdn.tld:224.9.9.9"
+            --env SQUID_PASSWORD="secretpassword" \
             --mount source=squid,target=/var/log/squid/ \
             --mount source=squid,target=/var/spool/squid/ \
             --name "squid" \
@@ -36,5 +21,4 @@ docker service create \
             --publish published=4002,target=4002 \
             --publish published=4827,target=4827 \
             --publish published=4000,target=4000 \
-            squid:0.0.100
-
+            192.168.1.1:5000/squid:1
